@@ -1,0 +1,17 @@
+type: object
+description: Schema of a bond instrument.
+allOf:
+  - $ref: 'FinancialInstrument.yaml'
+  - type: object
+    properties:
+      currencyOfDenomination:
+        description: currency of denomination.
+        type: string
+        pattern: '[A-Z]{3}'
+      maturityDate:
+        description: Maturity date of instrument.
+        type: string
+        format: date
+      interestRate:
+        description: Interest rate of the bond.
+        type: number

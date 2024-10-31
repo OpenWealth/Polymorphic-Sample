@@ -1,0 +1,11 @@
+{
+  "type": "Bond",
+  "name": "0,5% 18/32 Swiss Gov.",
+  "maturityDate": "2032-06-27",
+  "identificationList": [
+    {
+      "type": "isin",
+      "identifier": "CH0344958688"
+    }
+  ]
+}

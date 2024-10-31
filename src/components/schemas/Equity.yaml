@@ -1,0 +1,10 @@
+type: object
+description: Schema of a equity instrument.
+allOf:
+  - $ref: 'FinancialInstrument.yaml'
+  - type: object
+    properties:
+      countryOfRisk:
+        description: ISO2 country code.
+        type: string
+        pattern: '^[A-Z]{2}$'

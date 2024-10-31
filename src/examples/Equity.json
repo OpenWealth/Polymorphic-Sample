@@ -1,0 +1,11 @@
+{
+  "type": "Equity",
+  "name": "Apple Inc.",
+  "identificationList": [
+    {
+      "type": "isin",
+      "identifier": "US0378331005"
+    }
+  ],
+  "countryOfRisk": "DE"
+}

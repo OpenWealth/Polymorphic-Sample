@@ -1,0 +1,28 @@
+type: object
+description: Financial instrument entity.
+required:
+  - type
+properties:
+  type:
+    description: Type of the financial instrument.
+    type: string
+    enum:
+      - Cash
+      - Bond
+      - Equity
+      - Option
+  name:
+    description: Name of the financial instrument.
+    type: string
+  identificationList:
+    description: List of identification key value pairs.
+    type: array
+    items:
+      $ref: 'Identification.yaml'
+# discriminator:
+#   propertyName: type
+#   mapping:
+#     Bond: './Bond.yaml'
+#     Cash: './Cash.yaml'
+#     Equity: './Equity.yaml'
+#     Option: './Option.yaml'

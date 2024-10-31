@@ -1,0 +1,8 @@
+type: object
+description: Schema of a equity instrument.
+allOf:
+  - $ref: 'FinancialInstrument.yaml'
+  - type: object
+    properties:
+      underlyingInstrument:
+        $ref: 'FinancialInstrument.yaml'

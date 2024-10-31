@@ -1,0 +1,16 @@
+type: object
+description: Schema of and identification key value pair.
+required:
+  - type
+  - identifier
+properties:
+  type:
+    description: Identification type.
+    type: string
+    enum:
+      - iso3
+      - isin
+      - other
+  identifier:
+    description: Value of ientifier.
+    type: string

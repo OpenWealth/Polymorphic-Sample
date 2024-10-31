@@ -1,0 +1,7 @@
+in: path
+name: instrumentId
+required: true
+schema:
+  type: string
+  description: Unique and unambiguous identification of the instrument.
+description: Instrument ID Parameter.

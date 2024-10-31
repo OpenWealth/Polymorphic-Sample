@@ -1,0 +1,28 @@
+get:
+  summary: This is a summary
+  description: This is a description.
+  operationId: getInstrumentById
+  parameters:
+    - $ref: ../parameters/instrumentId.yaml
+  responses:
+    '200':
+      description: get instrument by id.
+      content:
+        application/json:
+          schema:
+            $ref: ../schemas/FinancialInstrumentSuper.yaml
+          examples:
+            Cash:
+              externalValue: '../../examples/Cash.json'
+            Bond:
+              externalValue: '../../examples/Bond.json'
+            Equity:
+              externalValue: '../../examples/Equity.json'
+            Option:
+              externalValue: '../../examples/Option.json'
+    '400':
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            type: string

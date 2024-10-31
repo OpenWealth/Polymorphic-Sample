@@ -1,0 +1,12 @@
+type: object
+description: Schema of a cash instrument.
+allOf:
+  - $ref: 'FinancialInstrument.yaml'
+  - type: object
+    required:
+      - currency
+    properties:
+      currency:
+        description: Currency code.
+        type: string
+        pattern: '^[A-Z]{3}$'
