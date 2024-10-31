@@ -1,0 +1,182 @@
+openapi: 3.1.0
+info:
+  title: Financial Instrument Sample Polymorph
+  version: 1.0.0
+  description: This is the description.
+  contact:
+    email: openwealth@synpulse.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - description: Sample Server URL
+    url: https://openwealth.ch
+security: []
+tags: []
+externalDocs:
+  description: Find out more about OpenWealth API specifications.
+  url: https://openwealth.ch/
+paths:
+  /financial-instruments/{instrumentId}:
+    get:
+      summary: This is a summary
+      description: This is a description.
+      operationId: getInstrumentById
+      parameters:
+        - $ref: '#/components/parameters/instrumentId'
+      responses:
+        '200':
+          description: get instrument by id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinancialInstrument'
+              examples:
+                Cash:
+                  value:
+                    type: Cash
+                    name: Swiss Franks
+                    currency: CHF
+                Bond:
+                  value:
+                    type: Bond
+                    name: 0,5% 18/32 Swiss Gov.
+                    maturityDate: '2032-06-27'
+                    identificationList:
+                      - type: isin
+                        identifier: CH0344958688
+                Equity:
+                  value:
+                    type: Equity
+                    name: Apple Inc.
+                    identificationList:
+                      - type: isin
+                        identifier: US0378331005
+                    countryOfRisk: DE
+                Option:
+                  value:
+                    type: Option
+                    name: Put Apple Inc.
+                    identificationList:
+                      - type: isin
+                        identifier: US0378331111
+                    underlyingInstrument:
+                      type: Equity
+                      name: Apple Inc.
+                      identificationList:
+                        - type: isin
+                          identifier: US0378331005
+        '400':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: string
+components:
+  parameters:
+    instrumentId:
+      in: path
+      name: instrumentId
+      required: true
+      schema:
+        type: string
+        description: Unique and unambiguous identification of the instrument.
+      description: Instrument ID Parameter.
+  schemas:
+    FinancialInstrument:
+      type: object
+      description: Financial instrument entity.
+      required:
+        - type
+      properties:
+        type:
+          description: Type of the financial instrument.
+          type: string
+          enum:
+            - Cash
+            - Bond
+            - Equity
+            - Option
+        name:
+          description: Name of the financial instrument.
+          type: string
+        identificationList:
+          description: List of identification key value pairs.
+          type: array
+          items:
+            $ref: '#/components/schemas/Identification'
+      discriminator:
+        propertyName: type
+        mapping:
+          Bond: '#/components/schemas/Bond'
+          Cash: '#/components/schemas/Cash'
+          Equity: '#/components/schemas/Equity'
+          Option: '#/components/schemas/Option'
+    Bond:
+      type: object
+      description: Schema of a bond instrument.
+      allOf:
+        - $ref: '#/components/schemas/FinancialInstrument'
+        - type: object
+          properties:
+            currencyOfDenomination:
+              description: currency of denomination.
+              type: string
+              pattern: '[A-Z]{3}'
+            maturityDate:
+              description: Maturity date of instrument.
+              type: string
+              format: date
+            interestRate:
+              description: Interest rate of the bond.
+              type: number
+    Cash:
+      type: object
+      description: Schema of a cash instrument.
+      allOf:
+        - $ref: '#/components/schemas/FinancialInstrument'
+        - type: object
+          required:
+            - currency
+          properties:
+            currency:
+              description: Currency code.
+              type: string
+              pattern: ^[A-Z]{3}$
+    Equity:
+      type: object
+      description: Schema of a equity instrument.
+      allOf:
+        - $ref: '#/components/schemas/FinancialInstrument'
+        - type: object
+          properties:
+            countryOfRisk:
+              description: ISO2 country code.
+              type: string
+              pattern: ^[A-Z]{2}$
+    Option:
+      type: object
+      description: Schema of a equity instrument.
+      allOf:
+        - $ref: '#/components/schemas/FinancialInstrument'
+        - type: object
+          properties:
+            underlyingInstrument:
+              $ref: '#/components/schemas/FinancialInstrument'
+    Identification:
+      type: object
+      description: Schema of and identification key value pair.
+      required:
+        - type
+        - identifier
+      properties:
+        type:
+          description: Identification type.
+          type: string
+          enum:
+            - iso3
+            - isin
+            - other
+        identifier:
+          description: Value of ientifier.
+          type: string
