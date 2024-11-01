@@ -34,4 +34,61 @@ The [generated](./generated) folder contains samples of generated code in common
 
 In order to reproduce the bundling and code generation process follow these steps:
 
-TBD
+- Bundle API using `redocly bundle`
+- Lint/Validate API using `redocly lint`
+- generate boiler plate code for your programming language of choice using ` openapi-generator`
+
+## Specification bundeling
+
+In order to create a single bundled file containing all references ther is a simple bundeling CLI available here:
+<https://redocly.com/docs/cli/guides/>
+
+Install the CLI with this command (npm) (you need to have node installed):
+
+```console
+npm i -g @redocly/cli@latest
+```
+
+Bundle a specification with this command
+
+```console
+redocly bundle src/API.yaml --ext yaml --output dist/instrumentAPI.yaml
+```
+
+where 'API.yaml' is the OAS source file and 'instrumentAPI.yaml' denotes the bundled output file in YAML format.
+
+## Specification linting/validation
+
+Redocly cli has a default set uf rules embedded when linting and validating your api. In addition rules sets can be configured in an additional configuration file. Custom rules can also be written. The operation also validates embedded/refernced examples.
+
+```console
+redocly lint dist/instrumentAPI.yaml
+```
+
+## API Server/Client creation
+
+The following project supports the creation of a code basis in various languages for OpenWealth providers (Server) and OpenWealth consumers (clients). This typically consists of an auto-generated object oriented class design of the OAS as well as code for serving and consuming requests.
+<https://openapi-generator.tech/>
+
+Installation (npm)
+
+```console
+npm install @openapitools/openapi-generator-cli -g
+```
+
+Example of creating an AspNetCore server:
+
+```console
+openapi-generator-cli generate -i dist/instrumentAPI.yaml -g aspnetcore --package-name API --output generated/aspnetcore --additional-properties=targetFramework=net8.0,useNewtonsoft=false,targetVersion=8.0,nullableReferenceTypes=true,pocoModels=true
+```
+
+where the `--additional-properties` define aspnetcore specific depndencies etc.
+Note that in the generated code the library `JsonSubTypes` is used to define the discriminator based deserialization into the correct sub class. There are also other techniques that can be used, such as writing a custom JsonConverter in the base class.
+
+Example of a Python FastAPI server:
+
+```console
+openapi-generator-cli generate -i dist/instrumentAPI.yaml -g python-fastapi --package-name API --output generated/python-fastapi
+```
+
+where 'api-bundled.yaml' is the OAS spec file. There are a number of parameters such as targetFramework, naming conventions etc that can be added to the command.
